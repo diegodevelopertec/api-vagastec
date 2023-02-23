@@ -1,0 +1,32 @@
+{
+  "name": "api-vagastec",
+  "version": "1.0.0",
+  "description": "api de vagas de emprego de tecnologia",
+  "main": "index.js",
+  "scripts": {
+    "server":"nodemon ./src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegodevelopertec/api-vagastec.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegodevelopertec/api-vagastec/issues"
+  },
+  "homepage": "https://github.com/diegodevelopertec/api-vagastec#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.14.1",
+    "@types/sequelize": "^4.28.14",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.1.2",
+    "sequelize": "^6.28.2"
+  }
+}
