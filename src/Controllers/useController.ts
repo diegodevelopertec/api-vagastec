@@ -1,17 +1,11 @@
 import {Request,Response} from 'express'
 import { where } from 'sequelize'
 import { users } from '../Models/userModel'
-
-export const createUser=async (req:Request,res:Response)=>{
-
-   let {nome,foto,cpf,tipo,email,password,github,linkedin}=req.body
-   let newUser=await users.create({nome,foto,cpf,tipo,email,password,github,linkedin})
-    res.json({id:newUser.id,newUser})
+import  JWT  from 'jsonwebtoken'
 
 
 
 
-}
 
 
 export const getAllUsers=async (req:Request,res:Response)=>{
@@ -74,8 +68,64 @@ export const getUsersTypes=async (req:Request,res:Response )=>{
         }})
         res.json(listUsers)
     }else{
-        res.json({error:'nada encontrado' })
+        res.json({error:`nenhum ${type} encontrado`})
     }
 
 
 }
+
+export const Register=async(req:Request,res:Response)=>{
+    if(req.body.email && req.body.senha ){
+        let {nome,foto,cpf,tipo,email,password,github,linkedin}=req.body
+
+        let user=await users.findOne({where:{email}})
+
+        if(!user){
+            let newUser=await users.create({nome,foto,cpf,tipo,email,password,github,linkedin})
+            const token=JWT.sign(
+                {id:newUser.id,emai:newUser.email},
+                process.env.JWT_KEY as string,
+                {expiresIn:'2h'}
+            )
+
+            res.json({id:newUser.id,token})
+        }else{
+            res.json({erro:'email e/ou senhas já existem'})
+        }
+    
+    }
+
+     return res.json({erro:'email e/ou senha não enviados'})
+
+}
+
+
+export const Login=async(req:Request,res:Response)=>{
+ 
+    if(req.body.email && req.body.senha ){
+        let {email,senha}=req.body
+
+        let user=await users.findOne({where:{email,senha}})
+
+        if(user){
+           
+            const token=JWT.sign(
+                {id:user.id,emai:user.email},
+                process.env.JWT_KEY as string,
+                {expiresIn:'2h'}
+            )
+
+           res.json({status:true,token})
+        }else{
+            res.json({status:false})
+        }
+    
+    }
+     return res.json({erro:'email e/ou senha não enviados'})
+   
+
+}
+
+
+
+
